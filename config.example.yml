@@ -1,0 +1,25 @@
+application:
+    message:
+        ttl: 1
+    server:
+        host: 'localhost'
+        port: 8080
+
+home_servers:
+    default:
+        URL: matrix.org
+
+users:
+    default:
+        home_server: default
+        username: "@example:matrix.org"
+        password: example
+
+rooms:
+    default:
+        address: "#example:matrix.org"
+
+receiver:
+    default:
+        user: default
+        room: default
