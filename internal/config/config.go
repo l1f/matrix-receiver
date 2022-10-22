@@ -39,6 +39,10 @@ func (c Config) Validate() error {
 		}
 	}
 
+	if err := c.Application.validate(); err != nil {
+		return err
+	}
+
 	return nil
 }
 

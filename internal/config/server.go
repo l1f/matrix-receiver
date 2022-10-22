@@ -1,6 +1,14 @@
 package config
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var (
+	ErrServerHostNotSet = errors.New("server host not set")
+	ErrServerPortTooLow = errors.New("server port too low")
+)
 
 type Server struct {
 	Host string `yaml:"host"`
@@ -8,6 +16,18 @@ type Server struct {
 
 	Buffers  `yaml:"buffers"`
 	Timeouts `yaml:"timeouts"`
+}
+
+func (s Server) validate() error {
+	if s.Host == "" {
+		return ErrServerHostNotSet
+	}
+
+	if s.Port <= 1024 {
+		return ErrServerPortTooLow
+	}
+
+	return nil
 }
 
 type Buffers struct {
