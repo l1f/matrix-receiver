@@ -5,7 +5,6 @@ import (
 	"matrix-alertmanager/internal/alertmanager"
 	"matrix-alertmanager/internal/config"
 	"matrix-alertmanager/internal/matrix"
-	"matrix-alertmanager/internal/queue"
 	"matrix-alertmanager/internal/template"
 )
 
@@ -42,7 +41,7 @@ func joinRoom(client matrix.Matrix, roomID string) error {
 	return client.JoinRoomByAlias(roomID)
 }
 
-func (l logic) ScheduleMessage(webhook alertmanager.Webhook) error {
+func (l logic) SendMessage(webhook alertmanager.Webhook) error {
 	receiver, ok := l.ctx.Config.Receiver[webhook.Receiver]
 	if !ok {
 		return ErrorReceiverNotFound
@@ -73,16 +72,12 @@ func (l logic) ScheduleMessage(webhook alertmanager.Webhook) error {
 		return err
 	}
 
-	l.ctx.Queue.Add(queue.Data{TTL: l.ctx.Config.Message.TTL, F: func() bool {
-		message := template.Generate(webhook.Status, webhook.Alerts)
-		err := client.Send(roomID, message)
-		if err != nil {
-			l.ctx.Logger.Error().Err(err)
-			return false
-		}
-
-		return true
-	}})
+	message := template.Generate(webhook.Status, webhook.Alerts)
+	err = client.Send(roomID, message)
+	if err != nil {
+		l.ctx.Logger.Error().Err(err)
+		return err
+	}
 
 	return nil
 }

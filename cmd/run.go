@@ -2,7 +2,8 @@ package main
 
 import (
 	"github.com/urfave/cli/v2"
-	"matrix-alertmanager/cmd/receiver"
+
+  "matrix-alertmanager/cmd/receiver"
 	"matrix-alertmanager/internal/config"
 )
 

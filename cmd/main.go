@@ -1,10 +1,11 @@
+// entrypoint of the application
 package main
 
 import (
 	"github.com/rs/zerolog"
 	"github.com/urfave/cli/v2"
 	"os"
-)
+) 
 
 const version = "DEV"
 
@@ -16,6 +17,7 @@ func init() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 }
 
+// RegisterCommand to add commands
 func RegisterCommand(command *cli.Command) {
 	commands = append(commands, command)
 }

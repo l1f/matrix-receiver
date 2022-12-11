@@ -16,7 +16,7 @@ func (h Handlers) AlertHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	err = h.ctx.Logic.ScheduleMessage(webhook)
+	err = h.ctx.Logic.SendMessage(webhook)
 	if err != nil {
 		h.ctx.Logger.Error().Err(err).Send()
 		ctx.SetBody([]byte("ERR"))

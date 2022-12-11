@@ -5,7 +5,6 @@ import (
 	"matrix-alertmanager/internal/application"
 	"matrix-alertmanager/internal/config"
 	"matrix-alertmanager/internal/logic"
-	"matrix-alertmanager/internal/queue"
 	"matrix-alertmanager/internal/server"
 )
 
@@ -22,11 +21,6 @@ func New(config config.Config, logger zerolog.Logger) error {
 	}
 
 	ctx.Clients = clients
-
-	defaultQueue := queue.New(ctx.Config.Message.TTL, ctx.Logger)
-	ctx.Queue = defaultQueue
-
-	go ctx.Queue.Run()
 
 	defaultLogic := logic.New(ctx)
 	ctx.Logic = defaultLogic
